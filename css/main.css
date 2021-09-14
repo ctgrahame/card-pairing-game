@@ -1,0 +1,45 @@
+.container {
+    width: 70%;
+    margin: 2rem auto;
+}
+
+#items-wrap {
+    flex-flow: row wrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.item {
+    width: 150px;
+    height: 200px;
+    margin: 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 60px;
+    font-weight: 700;
+    color: #fff;
+    background-color: rgb(201, 135, 190);
+    text-align: center;
+    padding-top: 7%;
+}
+
+.btn-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn {
+    padding: 0.5rem;
+    font-size: 2rem;
+    background-color: rgb(3, 186, 192);
+    color: rgb(223, 237, 238);
+
+}
+
+.btn:hover {
+    background-color: rgb(14, 66, 68);
+    color: #fff;
+    cursor: pointer;
+}
