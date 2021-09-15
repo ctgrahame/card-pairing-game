@@ -19,6 +19,11 @@ img {
 
 }
 
+img:hover {
+    cursor: pointer;
+
+}
+
 
 .btn-wrap {
     display: flex;
