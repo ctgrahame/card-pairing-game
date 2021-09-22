@@ -11,7 +11,7 @@ const createCardArr = (arr) => {
     for(let i=0; i<arr.length; i++ ){
         newArr.push({value:i, img:arr[i]});
     }
-    console.log(newArr)
+    
     return newArr;
 };
 
@@ -38,83 +38,95 @@ const generateNumberArray = (arr) => {
 const renderCards = () => {
     const concatArr = concatArrs(clubs, diamonds, hearts, spades);
     const imgArray = generateNumberArray(concatArr);
+    
     const cardWrap = document.getElementById('items-wrap');
-
+    
     for (let idx = 0; idx < imgArray.length; idx++) {
-        //const div = document.createElement('div');
-        const img = document.createElement('img');
-        img.setAttribute('src', imgBacks)
-        img.setAttribute('class', 'item');
-        img.setAttribute('id', idx);
-        img.setAttribute('data-state', 'faceDown');
-        img.setAttribute('data-number', imgArray[idx].value);
-        img.setAttribute('data-img', imgArray[idx].img )
-        cardWrap.appendChild(img);
+       
+        const cardDiv = document.createElement('div');
+        cardDiv.setAttribute('class', 'cardDiv ');
+        cardWrap.appendChild(cardDiv);
+
+        const cardBack = document.createElement('div');
+        cardBack.setAttribute('class', 'face card-back');
+        cardDiv.appendChild(cardBack);
+
+        const imgBack = document.createElement('img');
+        imgBack.setAttribute('src', imgBacks);
+        imgBack.setAttribute('data-number', imgArray[idx].value);
+        imgBack.setAttribute('class', 'card-face-down');
+        imgBack.setAttribute('id', idx);
+        cardBack.appendChild(imgBack);
+
+        const cardFront = document.createElement('div');
+        cardFront.setAttribute('class', 'face card-front ');
+        cardDiv.appendChild(cardFront);
+
+        const imgFront = document.createElement('img');
+        const cardImg = `../img/fronts/${imgArray[idx].img}`;
+        imgFront.setAttribute('src', cardImg);
+        imgFront.setAttribute('data-number', imgArray[idx].value);
+        imgFront.setAttribute('class', 'card-face-up');
+        imgFront.setAttribute('id', idx);
+     
+        cardFront.appendChild(imgFront);
+
     }
 };
 
-const faceUp = (el) => {
-    const cardImg = `../img/fronts/${el.target.dataset.img}`;
-    el.target.setAttribute('data-state', 'faceUp');
-    el.target.setAttribute('src', cardImg);
-    
-};
-
-const faceDown = (el) => {
-    el.setAttribute('data-state', 'faceDown');
-    el.src = imgBacks;
-   
-};
+let clicked = [];
 
 const onCardClick = (e) => {
     e.preventDefault;
     const card = e.target;
     
+        
+    if( card.classList[0] === 'card-face-down'){
+        clicked.push(card);
 
-    if(card.dataset.state !== 'faceUp'&& card.dataset.state !== 'inactive' ){
-        clickedCards.push(card);
+        if( clicked.length < 2){
+            card.closest('.cardDiv').classList.add('active');
+        }
 
-        if(clickedCards.length < 2){
-            faceUp(e);
-        };
+        if( clicked.length === 2){
+            card.closest('.cardDiv').classList.add('active');
 
-        if(clickedCards.length === 2){
-            faceUp(e);
-
-            if(clickedCards[0].dataset.number === clickedCards[1].dataset.number){
-                    
-                    clickedCards.forEach((card)=>{
-                    card.dataset.state = 'inactive';
-                   
-                });
-
-                clickedCards = [];
-            }; 
-        };
-
-        if(clickedCards.length > 2){
-            
-            clickedCards.forEach((card)=>{
-                if( card.dataset.state !== 'inactive'){
-                    faceDown(card);
-                };
+            if(clicked[0].dataset.number === clicked[1].dataset.number){
                 
+                clicked[0].closest('.cardDiv').classList.add('matched');
+                clicked[1].closest('.cardDiv').classList.add('matched');
+            } 
+        }
+
+        if(clicked.length > 2){
+            const activeCards = document.querySelectorAll('.active');
+            
+            activeCards.forEach((card)=>{
+                if( !card.closest('.cardDiv').classList.contains('matched')){
+                    card.closest('.cardDiv').classList.remove('active');
+                }
             });
-            clickedCards = [];
-        };
-    };
-    
+            
+            clicked = [];
+        }
+    }
 };
 
-let clickedCards = [];
+const gameOver = () => {
+    const btn = document.querySelector('.btn');
+    btn.innerHTML = 'Congratulations! Play again?';
+    
+}
 
 const playGame = () => {
     renderCards();
-    const cards = document.querySelectorAll('.item');
+    const cards = document.querySelectorAll('.cardDiv');
     cards.forEach((card) => {
         card.addEventListener('click', onCardClick);
-    }); 
+    });
+
 }
+
 
 playGame();
 
