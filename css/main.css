@@ -1,25 +1,25 @@
-.container {
+body {
     background-color: green;
 }
 
-#items-wrap {
-    /* perspective: 600px; */
-    /* position: absolute; */
-    z-index: 1;
+.container {
 
+    max-width: 800px;
+    margin: 2rem auto;
+}
+
+#items-wrap {
+    z-index: 1;
     flex-wrap: wrap;
     display: flex;
     justify-content: flex-start;
-    align-items: center;
-    /* height: 100vh; */
+
 }
 
 .cardDiv {
     margin: .5rem;
-    /* position: relative; */
     width: 80px;
     height: 100px;
-    /* text-align: center; */
     transition: transform 0.6s;
     transform-style: preserve-3d;
 
@@ -63,12 +63,12 @@ img {
 }
 
 .btn {
-    padding: 0.5rem;
-    font-size: 2rem;
+    padding: 0.5rem 2rem;
+    font-size: 1.5rem;
     background-color: rgb(3, 186, 192);
     color: rgb(223, 237, 238);
     margin: 1rem auto 2rem auto;
-
+    border-radius: 5px;
 }
 
 .btn:hover {
