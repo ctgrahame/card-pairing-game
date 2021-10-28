@@ -6,6 +6,11 @@ const diamonds = ['diamonds_2.svg', 'diamonds_3.svg', 'diamonds_4.svg', 'diamond
 const hearts = ['hearts_2.svg', 'hearts_3.svg', 'hearts_4.svg', 'hearts_5.svg','hearts_6.svg', 'hearts_7.svg', 'hearts_8.svg', 'hearts_9.svg', 'hearts_10.svg', 'hearts_ace.svg', 'hearts_jack.svg', 'hearts_king.svg', 'hearts_queen.svg'];
 const spades = ['spades_2.svg', 'spades_3.svg', 'spades_4.svg', 'spades_5.svg','spades_6.svg', 'spades_7.svg', 'spades_8.svg', 'spades_9.svg', 'spades_10.svg', 'spades_ace.svg', 'spades_jack.svg', 'spades_king.svg', 'spades_queen.svg'];
 
+let clicked = [];
+let isClicked = false;
+let matched = [];
+const btn = document.querySelector('.btn');
+
 const createCardArr = (arr) => {
     const newArr = [];
     for(let i=0; i<arr.length; i++ ){
@@ -74,33 +79,46 @@ const renderCards = () => {
     }
 };
 
-let clicked = [];
+
+// function clickEvent() {
+// if(!clicked)
+// {
+//     clicked = true;
+//     console.log('clicked!!');
+//     setTimeout(function(){
+//         clicked = false;
+//     }, 3000);
+// }
+// }
 
 const onCardClick = (e) => {
-    e.preventDefault;
     const card = e.target;
-    
-        
-    if( card.classList[0] === 'card-face-down'){
+     
+    if( !card.closest('.cardDiv').classList.contains('active') && !isClicked ){
         clicked.push(card);
+        isClicked = true;
 
         if( clicked.length < 2){
             card.closest('.cardDiv').classList.add('active');
+            
         }
 
         if( clicked.length === 2){
             card.closest('.cardDiv').classList.add('active');
-
+           
             if(clicked[0].dataset.number === clicked[1].dataset.number){
+                const card1 = clicked[0].closest('.cardDiv');
+                const card2 = clicked[1].closest('.cardDiv')
                 
-                clicked[0].closest('.cardDiv').classList.add('matched');
-                clicked[1].closest('.cardDiv').classList.add('matched');
+                card1.classList.add('matched');
+                card2.classList.add('matched');
+                matched.push(card1, card2);
             } 
         }
 
         if(clicked.length > 2){
             const activeCards = document.querySelectorAll('.active');
-            
+                        
             activeCards.forEach((card)=>{
                 if( !card.closest('.cardDiv').classList.contains('matched')){
                     card.closest('.cardDiv').classList.remove('active');
@@ -108,29 +126,31 @@ const onCardClick = (e) => {
             });
             
             clicked = [];
+            
         }
+        //preventing clicking many clicks
+        setTimeout(function(){
+            isClicked = false;
+        }, 500);
+    }
+    if( matched && matched.length === 52){
+        btn.innerHTML = "Congratulations! Play again?";
     }
 };
 
-const gameOver = () => {
-    const btn = document.querySelector('.btn');
-    btn.innerHTML = 'Congratulations! Play again?';
-    
-}
-
 const playGame = () => {
     renderCards();
+    btn.innerHTML = "Let's make pairs!"
     const cards = document.querySelectorAll('.cardDiv');
     cards.forEach((card) => {
         card.addEventListener('click', onCardClick);
     });
 
-}
+};
 
 
 playGame();
 
-const btn = document.querySelector('.btn');
 const removeAllChildNodes = (parent) => {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);

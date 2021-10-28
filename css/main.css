@@ -48,7 +48,7 @@ body {
 
 .active {
     transform: rotateY(180deg);
-    /* box-shadow: -5px 5px 5px #aaa; */
+
 }
 
 img {
